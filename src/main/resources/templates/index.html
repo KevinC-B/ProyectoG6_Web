@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- Esta es la primera página web dinámica   -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>Smell Elegance</title>
+    </head>
+    
+    <body>
+        <header th:replace="~{layout/plantilla :: header}"/>
+        <h1>Listado de Clientes</h1>
+        <p>Total de Clientes: <span th:text="${totalClientes}"></span></p>
+        <section th:replace="~{/fragmentos :: listadoCliente}"/>
+    </body>
+
+</html>

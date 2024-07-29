@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- Esta es la pagina fragmentos para producto  -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="~{layout/plantilla :: head}"/>
+    <meta charset="UTF-8"/>
+    <body>
+
+        <!-- mostrar la informaccion del cliente -->
+        <section th:fragment="listadoCliente" id="cliente">
+            <div class="container"> 
+                <table class="table">
+                    <thead class="table-dark">
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cliente : ${clientes}">
+                            <td th:text="${cliente.cedula}"></td>
+                            <td th:text="${cliente.nombre}"></td>
+                            <td th:text="${cliente.ape_Paterno}"></td>
+                            <td th:text="${cliente.ape_Materno}"></td>
+                            <td th:text="${#dates.format(cliente.fecha_Nacimiento, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${cliente.correo}"></td>
+                            <td th:text="${cliente.telefono}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+    </body>
+</html>

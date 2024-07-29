@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- Esta es la primera página web dinámica   -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>Smell Elegance</title>
+    </head>
+
+    <body>
+
+        <!-- Fragmento para visualizar los productos del catálogo -->
+        <section th:fragment="listadocatalogo" id="productos">
+            <div class="container p-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Listado de Productos</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card text-center bg-success text-white mb-3"></div>
+                            </div>
+                            <div class="row row-cols-1 row-cols-md-4 g-4">
+                                <div class="col" th:each="p : ${productos}">
+                                    <div class="card h-100">
+                                        <figure class="w-100 d-flex justify-content-center align-items-center">
+                                            <img th:src="${p.rutaImg}" height="200"  alt="alt"/>
+                                        </figure>
+                                        <div class="card-header">
+                                            <h5 class="card-title">[[${p.nombreProducto}]]</h5>
+                                            <div class="price-container d-flex align-items-center">
+                                                <h6 class="mb-0">Precio:</h6>
+                                                <figcaption class="mb-0 ml-2">₡[[${p.precio}]]</figcaption>
+                                            </div>
+                                            <a th:href="@{/catalogo/verproducto/{id}(id=${p.idProducto})}" class="btn btn-primary">Ver Producto</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fragmento para visualizar el producto a detalle -->
+        <section th:fragment="verProducto">
+            <div class="container d-flex justify-content-center align-items-center">
+                <div class="card mb-3" style="max-width: 720px; width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img th:src="${producto.rutaImg}" class="img-fluid rounded-start" alt="Imagen del producto">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">[[${producto.nombreProducto}]]</h5>
+                                <p class="card-text"><strong>Marca:</strong> [[${producto.marca}]]</p>
+                                <p class="card-text"><strong>Descripción:</strong> [[${producto.descripcion}]]</p>
+                                <p class="card-text"><strong>Tamaño:</strong> [[${producto.tamano}]]</p>
+                                <p class="card-text"><strong>Precio:</strong> ₡[[${producto.precio}]]</p>
+                                <p class="card-text"><small class="text-body-secondary" th:if="${producto.activo}">Producto disponible</small></p>
+                                <p class="card-text"><small class="text-body-secondary" th:if="${!producto.activo}">Producto no disponible</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </body>
+</html>
