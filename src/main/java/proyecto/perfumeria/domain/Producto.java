@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data //Getters y Setters
-@Entity
+@Entity //Esta clase mapea una tabla de la BD
 @Table(name="producto") //Referencia a la tabla de la BD
 public class Producto implements Serializable {
     
