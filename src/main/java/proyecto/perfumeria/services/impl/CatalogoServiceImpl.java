@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import proyecto.perfumeria.domain.Producto;
-import proyecto.perfumeria.dao.ProductoDao;
-import proyecto.perfumeria.services.ProductoService;
+import proyecto.perfumeria.dao.CatalogoDao;
+import proyecto.perfumeria.services.CatalogoService;
 
 @Service
-public class ProductoServiceImpl implements ProductoService {
+public class CatalogoServiceImpl implements CatalogoService {
 
     @Autowired
-    private ProductoDao productoDao;
+    private CatalogoDao productoDao;
     
     @Override
     @Transactional(readOnly = true)
@@ -22,5 +22,11 @@ public class ProductoServiceImpl implements ProductoService {
             lista.removeIf(p -> !p.isActivo());
         }
         return lista;
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Producto getProducto(Producto producto) {
+        return productoDao.findById(producto.getIdProducto()).orElse(null);
     }
 }
