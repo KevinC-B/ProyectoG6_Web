@@ -15,12 +15,30 @@ public class ProductoServiceImpl implements ProductoService {
     private ProductoDao productoDao;
     
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //Esta transacción solo sera de lectura
     public List<Producto> getProductos(boolean activos) {
         var lista = productoDao.findAll();
         if (activos) { //Sólo buscar productos activos
             lista.removeIf(p -> !p.isActivo());
         }
         return lista;
+    }
+
+    @Override
+    @Transactional(readOnly = true) //Esta transacción solo sera de lectura
+    public Producto getProducto(Producto producto) {
+        return productoDao.findById(producto.getIdProducto()).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void save(Producto producto) {
+        productoDao.save(producto);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Producto producto) {
+        productoDao.delete(producto);
     }
 }
