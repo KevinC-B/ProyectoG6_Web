@@ -6,5 +6,4 @@ import proyecto.perfumeria.domain.Producto;
 //JpaRepository es la interface que tiene la bd para poder realizar instrucciónes sin usar codígo sql
 public interface ProductoDao extends JpaRepository<Producto,Long>{
     
-    
 }
