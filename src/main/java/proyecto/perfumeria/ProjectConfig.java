@@ -67,30 +67,24 @@ public class ProjectConfig  implements WebMvcConfigurer{
         http
                 .authorizeHttpRequests((request) -> request
                 .requestMatchers("/","/index","/errores/**",
-                        "/carrito/**","/pruebas/**","/reportes/**",
-                        "/registro/**","/js/**","/webjars/**")
+                        "/js/**","/webjars/**")
                         .permitAll()
                 .requestMatchers(
-                        "/producto/nuevo","/producto/guardar",
-                        "/producto/modificar/**","/producto/eliminar/**",
-                        "/categoria/nuevo","/categoria/guardar",
-                        "/categoria/modificar/**","/categoria/eliminar/**",
-                        "/usuario/nuevo","/usuario/guardar",
-                        "/usuario/modificar/**","/usuario/eliminar/**",
-                        "/reportes/**"
-                ).hasRole("ADMIN")
-                .requestMatchers(
+                        "/catalogo/listcatalogo",
+                        "/contacto/listcontacto",
                         "/producto/listado",
-                        "/categoria/listado",
-                        "/usuario/listado"
+                        "/carrito/listcarrito",
+                        "/producto/verproducto"
+                ).hasAnyRole("ADMIN", "VENDEDOR", "USER")
+                .requestMatchers(
+                        "/contacto/fragmentosContacto"
                 ).hasAnyRole("ADMIN", "VENDEDOR")
-                .requestMatchers("/facturar/carrito")
-                .hasRole("USER")
                 )
                 .formLogin((form) -> form
                 .loginPage("/login").permitAll())
                 .logout((logout) -> logout.permitAll());
         return http.build();
+        
     }
 
 /* El siguiente método se utiliza para completar la clase no es 
@@ -110,12 +104,12 @@ public class ProjectConfig  implements WebMvcConfigurer{
         UserDetails admin3 = User.builder()
                 .username("isaac")
                 .password("{noop}123")
-                .roles("USER", "VENDEDOR", "ADMIN")
+                .roles("USER", "VENDEDOR")
                 .build();
         UserDetails admin4 = User.builder()
                 .username("jose")
                 .password("{noop}123")
-                .roles("USER", "VENDEDOR", "ADMIN")
+                .roles("USER", "VENDEDOR")
                 .build();
         
         UserDetails sales = User.builder()
