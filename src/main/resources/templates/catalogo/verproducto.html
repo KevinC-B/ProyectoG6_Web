@@ -1,19 +1,34 @@
 <!DOCTYPE html>
-<!-- Esta es la primera página web dinámica   -->
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 
     <head th:replace="~{layout/plantilla :: head}">
-        <title>Smell Elegance</title>
+        <title>Detalle del Producto</title>
     </head>
 
     <body>
         <header th:replace="~{layout/plantilla :: header}"/>
 
-        <section th:replace="~{catalogo/fragmentosCatalogo :: verProducto}"/>
-        
-
+        <section id="producto-detalle">
+            <div class="container p-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h3 class="card-title" th:text="${producto.nombreProducto}">Nombre del Producto</h3>
+                                <img th:src="@{${producto.rutaImagen}}" height="300" alt="Imagen del producto"/>
+                                <p class="card-text" th:text="${producto.descripcion}">Descripción del producto...</p>
+                                <p class="card-text" th:text="${producto.marca}">Marca del producto...</p>
+                                <p class="card-text" th:text="${producto.tamano}">Tamaño del producto...</p>
+                                <p class="card-text">Precio: <span th:text="${producto.precio}">₡0.00</span></p>
+                                <p th:if="${producto.activo}" class="text-success"><small>Producto Activo</small></p>
+                                <p th:if="${!producto.activo}" class="text-danger"><small>Producto Inactivo</small></p>
+                                <a th:href="@{/catalogo}" class="btn btn-primary">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </body>
-
 </html>

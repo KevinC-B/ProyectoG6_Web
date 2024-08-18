@@ -1,27 +1,69 @@
 package proyecto.perfumeria.domain;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import lombok.Data;
+import java.util.List;
 
-@Data //Getters y Setters
-@Entity //Esta clase mapea una tabla de la BD
-@Table(name = "producto") //Referencia a la tabla de la BD
-public class Producto implements Serializable {
+@Entity
+public class Producto {
 
-    private static final long serialVersionUID = 1l;
-
-    @Id //Para identificar el atributo primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //Para dejar que la BD se preocupe del auto increment
-    @Column(name = "id_Producto") //Para asociar atributo con el espacio en la BD
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProducto;
 
     private String nombreProducto;
-    private String marca;
-    private String descripcion;
-    private float precio;
-    private String tamano;
-    private boolean activo;
+    private Double precio;
     private String rutaImagen;
+    private boolean activo;
 
+    @ManyToMany
+    private List<Categoria> categorias; // Debe existir esta propiedad en Producto
+
+    // Getters y Setters
+    public Long getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Long idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public String getRutaImagen() {
+        return rutaImagen;
+    }
+
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
 }

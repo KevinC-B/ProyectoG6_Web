@@ -1,18 +1,58 @@
 <!DOCTYPE html>
-<!-- Esta es la primera página web dinámica   -->
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 
     <head th:replace="~{layout/plantilla :: head}">
-        <title>Smell Elegance</title>
+        <title>Listado de Productos</title>
     </head>
 
     <body>
         <header th:replace="~{layout/plantilla :: header}"/>
 
-        <section th:replace="~{catalogo/fragmentosCatalogo :: listadocatalogo}"/>
-        
-    </body>
+        <section id="productos">
+            <div class="container p-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4>Listado de Productos</h4>
+                                <form th:action="@{/catalogo}" method="get" class="form-inline">
+                                    <div class="input-group">
+                                        <input type="number" name="minPrice" class="form-control" placeholder="Precio Mínimo" min="0">
+                                            <input type="number" name="maxPrice" class="form-control" placeholder="Precio Máximo" min="0"/>
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Filtrar</button>
+                                            </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card text-center bg-success text-white mb-3">
+                                    <!-- Contenido adicional opcional -->
+                                </div>
+                            </div>
+                            <div class="row row-cols-1 row-cols-md-4 g-4">
+                                <div class="col" th:each="p : ${productos}">
+                                    <div class="card h-100">
+                                        <figure class="w-100 d-flex justify-content-center align-items-center">
+                                            <img th:src="@{${p.rutaImagen}}" height="200" alt="Imagen del producto"/>
+                                        </figure>
+                                        <div class="card-header">
+                                            <h5 class="card-title" th:text="${p.nombreProducto}">Nombre del Producto</h5>
+                                            <div class="price-container d-flex align-items-center">
+                                                <h6 class="mb-0">Precio:</h6>
+                                                <span class="mb-0 ml-2" th:text="${p.precio}">₡0.00</span>
+                                            </div>
+                                            <a th:href="@{/catalogo/verproducto/{id}(id=${p.idProducto})}" class="btn btn-primary">Ver Producto</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+    </body>
 </html>
