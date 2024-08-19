@@ -1,9 +1,13 @@
 package proyecto.perfumeria;
 
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,6 +21,7 @@ public class ProjectConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {
+        // Use CookieLocaleResolver or SessionLocaleResolver
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         return localeResolver;
@@ -24,16 +29,27 @@ public class ProjectConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        var lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
+    public void addInterceptors(InterceptorRegistry registro) {
+        registro.addInterceptor(localeChangeInterceptor());
     }
 
+    /*Este método se utiliza al enviar correos de activación según el idioma de la compu
+    @Bean("messageSource")
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource
+                = new ResourceBundleMessageSource();
+        messageSource.setBasenames("messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }*/
+
+    /* Los siguiente métodos son para implementar el tema de seguridad dentro del proyecto */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
@@ -45,12 +61,57 @@ public class ProjectConfig implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/**").permitAll()
-            )
-            .formLogin((form) -> form
+                .authorizeHttpRequests((request) -> request
+                .requestMatchers("/", "/index", "/errores/**",
+                        "catalogo/listcatalogo", "catalogo/verproducto/**",
+                        "contacto/listcontacto",
+                        "/carrito/**", "/pruebas/**", "/reportes/**",
+                        "/registro/**", "/js/**", "/webjars/**")
+                .permitAll()
+                .requestMatchers(
+                        "/producto/nuevo", "/producto/guardar",
+                        "/producto/modificar/**", "/producto/eliminar/**",
+                        "/usuario/nuevo", "/usuario/guardar",
+                        "/usuario/modificar/**", "/usuario/eliminar/**",
+                        "/reportes/**",
+                        "/producto/listado",
+                        "/usuario/listado"
+                ).hasAnyRole("ADMIN")
+                .requestMatchers("/facturar/carrito")
+                .hasRole("USER")
+                )
+                .formLogin((form) -> form
                 .loginPage("/login").permitAll())
-            .logout((logout) -> logout.permitAll());
+                .logout((logout) -> logout.permitAll());
         return http.build();
+    }
+
+    /* El siguiente método se utiliza para completar la clase no es 
+    realmente funcional, la próxima semana se reemplaza con usuarios de BD 
+    @Bean
+    public UserDetailsService users() {
+        UserDetails admin = User.builder()
+                .username("carlos")
+                .password("{noop}123")
+                .roles("USER", "ADMIN")
+                .build();
+        UserDetails sales = User.builder()
+                .username("ana")
+                .password("{noop}456")
+                .roles("USER", "ADMIN")
+                .build();
+        UserDetails user = User.builder()
+                .username("luis")
+                .password("{noop}789")
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(user, sales, admin);
+    } */
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    public void configurerGlobal(AuthenticationManagerBuilder build) throws Exception {
+        build.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 }

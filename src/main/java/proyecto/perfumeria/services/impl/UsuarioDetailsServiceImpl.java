@@ -51,7 +51,7 @@ public class UsuarioDetailsServiceImpl implements UsuarioDetailsService, UserDet
         }
         
         //Se retorna un usuario del sistema con username, password y roles...
-        return new User(usuario.getUsername(), usuario.getContrasena(), roles);
+        return new User(usuario.getUsername(), usuario.getPassword(), roles);
     }
     
 }
