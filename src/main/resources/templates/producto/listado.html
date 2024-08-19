@@ -4,18 +4,28 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 
-    <head th:replace="~{layout/plantilla :: head}">
-        <title>Smell Elegance</title>
-    </head>
+
+<!-- listado.html -->
+
+<head th:replace="~{layout/plantilla :: head}">
+    <title>Smell Elegance</title>
+</head>
+
+<body>
+    <header th:replace="~{layout/plantilla :: header}"/>
     
-    <body>
-        <header th:replace="~{layout/plantilla :: header}"/>
-        
-        <section th:replace="~{producto/fragmentos :: botonesAgregar}"/>
+    <!-- Verificar si el usuario es "estefani" o "kevin" -->
+    <th:block th:if="${principal != null and (principal.username.equalsIgnoreCase('estefani') or principal.username.equalsIgnoreCase('kevin'))}">
+    <!-- botones de agregar producto -->
+     <section th:replace="~{producto/fragmentos :: botonesAgregar}"/>
         <section th:replace="~{producto/fragmentos :: agregarProducto}"/>
-        <section th:replace="~{producto/fragmentos :: listadoProductos}"/>
-        
-        
-    </body>
+</th:block>
+       
+    
+    
+    <section th:replace="~{producto/fragmentos :: listadoProductos}"/>
+    
+    
+</body>
 
 </html>
