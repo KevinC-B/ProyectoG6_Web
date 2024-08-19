@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- Esta es la primera página web dinámica   -->
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 
     <head th:replace="~{layout/plantilla :: head}">
@@ -31,7 +32,7 @@
                                             <h5 class="card-title">[[${p.nombreProducto}]]</h5>
                                             <div class="price-container d-flex align-items-center">
                                                 <h6 class="mb-0">Precio:</h6>
-                                                <figcaption class="mb-0 ml-2">₡[[${p.precio}]]</figcaption>
+                                                <span class="mb-0 ml-2">₡[[${p.precio}]]</span>
                                             </div>
                                             <a th:href="@{/catalogo/verproducto/{id}(id=${p.idProducto})}" class="btn btn-primary">Ver Producto</a>
                                         </div>
@@ -50,7 +51,7 @@
                 <div class="card mb-3" style="max-width: 720px; width: 100%;">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            <img th:src="${producto.rutaImg}" class="img-fluid rounded-start" alt="Imagen del producto">
+                            <img th:src="${producto.rutaImagen}" class="img-fluid rounded-start" alt="Imagen del producto"/>
                         </div>
                         <div class="col-md-7">
                             <div class="card-body">
