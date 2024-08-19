@@ -2,9 +2,10 @@ package proyecto.perfumeria.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Data; //se generan los get y set por defecto
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity //esta clase va a mapear una tabla de la base de datos
@@ -20,13 +21,13 @@ public class Usuario implements Serializable{ //Serializable para poder enviar o
     private String cedula;
     
     private String nombre;
-    private String ape_Paterno;
-    private String ape_Materno;
-    private Date fecha_Nacimiento;
+    private String apellidos;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaNacimiento;
     private String correo;
     private String telefono;
     private String username;
-    private String contrasena;
+    private String password;
     private String rutaImagen;
     private boolean activo;
     
