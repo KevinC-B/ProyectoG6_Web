@@ -1,36 +1,35 @@
 <!DOCTYPE html>
-<!-- Esta es la primera página web dinámica   -->
+<!-- Index -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 
-    <head th:replace="~{layout/plantilla :: head}">
-        <title>Smell Elegance</title>
+<head th:replace="~{layout/plantilla :: head}">
+    <title>Smell Elegance</title>
+</head>
 
-    </head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"/>
 
-    <body>
-        <header th:replace="~{layout/plantilla :: header}"/>
-
-        <section class="hero d-flex align-items-center justify-content-center" style="min-height: 90vh;">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-6 text-center text-md-start">
-                        <h1>SMELL<br>ELEGANCE</h1>
-                        <h2>A & G</h2>
-                        <p>Descubre el mundo de las fragancias con nuestra exclusiva colección de perfumes.</p>
-                        <p>Nos especializamos en ofrecerte las mejores marcas y los aromas más exquisitos que realzan tu personalidad y estilo.</p>
-                        <p>Desde notas frescas y cítricas hasta aromas intensos y seductores, tenemos algo para cada gusto y ocasión. Ya sea que busques un regalo perfecto o quieras consentirte.</p>
-                        <a href="#" class="btn btn-dark">Descubrir</a>
-                    </div>
-                    <div class="col-md-6 text-center" style="background-color: #D9D9D9">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/smell-elegance.appspot.com/o/SmellElegance%2Fbasic%2Fperfume.png?alt=media&token=your-token" alt="Perfume" class="img-fluid" />
-                    </div>
+    <section class="hero d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <h1>SMELL<br>ELEGANCE</h1>
+                    <h2>A & G</h2>
+                    <p>Descubre el mundo de las fragancias con nuestra exclusiva colección de perfumes.</p>
+                    <p>Nos especializamos en ofrecerte las mejores marcas y los aromas más exquisitos que realzan tu personalidad y estilo.</p>
+                    <p>Desde notas frescas y cítricas hasta aromas intensos y seductores, tenemos algo para cada gusto y ocasión. Ya sea que busques un regalo perfecto o quieras consentirte.</p>
+                <a th:href="@{/catalogo?search=The One Dolce&Gabbana}" class="btn btn-dark">Descubrir</a>
+                <!-- lo de The One Dolce&Gabbana lo puse solo para probar el boton de descubrir, eso lo manda al catalogo, cuando se incluya al catalogo vamos a mostrar el perfume que esta en el index-->
+            </div>
+                <div class="col-md-6 text-center" style="background-color: #D9D9D9">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/smell-elegance.appspot.com/o/SmellElegance%2Fbasic%2Fperfume.png?alt=media&token=your-token" alt="Perfume" class="img-fluid" />
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-
-    </body>
+</body>
 
 </html>

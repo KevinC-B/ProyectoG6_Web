@@ -31,13 +31,20 @@ public class CatalogoController {
         model.addAttribute("productos", catalogoService.filtrarPorPrecio(minPrecio, maxPrecio));
         return "catalogo/listcatalogo";
     }
+
     @Autowired
     private CatalogoDao catalogoDao;
 
     @GetMapping("/catalogo")
-    public String mostrarCatalogo(Model model) {
-        List<Producto> productos = catalogoDao.findAll();
+    public String mostrarCatalogo(@RequestParam(value = "search", required = false) String search, Model model) {
+        List<Producto> productos;
+        if (search != null && !search.isEmpty()) {
+            productos = catalogoDao.findByNombreProductoContainingIgnoreCase(search);
+        } else {
+            productos = catalogoDao.findAll();
+        }
         model.addAttribute("productos", productos);
+        model.addAttribute("search", search);
         return "catalogo/listcatalogo";
     }
 
