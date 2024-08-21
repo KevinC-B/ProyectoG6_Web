@@ -72,7 +72,8 @@ public class ProjectConfig implements WebMvcConfigurer {
                 .hasRole("USER") // Esta ruta requiere rol USER
                 )
                 .formLogin((form) -> form
-                .loginPage("/login").permitAll())
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/index", true)) // Redirección después del login exitoso
                 .logout((logout) -> logout.permitAll());
         return http.build();
     }
