@@ -51,7 +51,7 @@ public class ProjectConfig implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((request) -> request
-                .requestMatchers("/", "/index", "/errores/**",
+                .requestMatchers("/login/**", "/", "/index", "/errores/**",
                         "/catalogo/**", // Asegura que todas las rutas dentro de /catalogo/ sean públicas
                         "/buscar",
                         "/contacto/listcontacto",

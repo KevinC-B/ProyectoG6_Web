@@ -52,23 +52,21 @@
 
                         <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
                             <li class="nav-item px-2">
-                                <form>
-                                    <a th:href="@{/login}">
-                                        <button class="btn btn-sm btn-outline-secondary,btn btn-dark" type="button">
-                                            <i class="fa-regular fa-circle-user" style="color: #ffffff;"></i>
-                                        </button>
-                                    </a>
-                                </form>
+                                <a th:href="@{/login}">
+                                    <button class="btn btn-sm btn-outline-secondary btn btn-dark" type="button">
+                                        <i class="fa-regular fa-circle-user" style="color: #ffffff;"></i>
+                                    </button>
+                                </a>
                             </li>
                         </ul>
                         <ul class="navbar-nav" sec:authorize="isAuthenticated()">
                             <li class="nav-item px-2 text-white">
                                 <img th:src="@{${session.imagenUsuario}}" class="rounded" height="30" style="width: 40px;" alt=""/>
-                                <span sec:authentication="name">Carlos</span>
+                                <span sec:authentication='name'>Jhon</span>
                             </li>
                             <li class="nav-item px-2 text-white">
                                 <form method="post" th:action="@{/logout}">
-                                    <button class="btn btn-sm btn-outline-secondary,btn btn-dark">
+                                    <button class="btn btn-sm btn-outline-secondary btn btn-dark">
                                         <i class="fas fa-right-from-bracket"></i>
                                     </button>
                                 </form>
