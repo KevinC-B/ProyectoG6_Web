@@ -1,8 +1,8 @@
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
-
     <head th:replace="~{layout/plantilla :: head}">
         <title>Catálogo de Productos</title>
     </head>
@@ -61,6 +61,9 @@
                                     <p class="card-text">Marca: <span th:text="${producto.marca}">Marca del Producto</span></p>
                                     <p class="card-text">Tamaño: <span th:text="${producto.tamano}">Tamaño del Producto</span></p>
                                     <p class="card-text">Precio: ₡<span th:text="${producto.precio}">Precio del Producto</span></p>
+
+                                    <!-- Botón Ver detalles -->
+                                    <a th:href="@{/producto/ver/{idProducto}(idProducto=${producto.idProducto})}" class="btn btn-primary">Ver detalles</a>
                                 </div>
                         </div>
                     </div>

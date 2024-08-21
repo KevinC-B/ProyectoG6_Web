@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,7 @@ import proyecto.perfumeria.services.ProductoService;
 @Controller
 @RequestMapping("/producto")
 public class ProductoController {
-    
+
     @Autowired
     private ProductoService productoService;
 
@@ -27,14 +28,14 @@ public class ProductoController {
 
         return "/producto/listado"; //Hace retorno de donde se visualiza la lista de productos
     }
-    
+
     @Autowired
     private FirebaseStorageService firebaseStorageService;
-    
+
     @PostMapping("/guardar")
     public String guardar(Producto producto,
             @RequestParam("imagenFile") MultipartFile imagenFile) {
-        
+
         if (!imagenFile.isEmpty()) {
             productoService.save(producto);
             String rutaImagen = firebaseStorageService
@@ -44,17 +45,27 @@ public class ProductoController {
         productoService.save(producto);
         return "redirect:/producto/listado";
     }
-    
+
     @GetMapping("/eliminar/{idProducto}") //Mapeamos hacía "eliminar" junto con el id del producto que se quiere eliminar
     public String eliminar(Producto producto) { //Agarra el "{idProducto}" con sus atributos y lo mete en el objeto del párametro "producto"
         productoService.delete(producto); //Instrucción para borrar el registro
         return "redirect:/producto/listado"; //Retorna a esa dirección
     }
-    
+
     @GetMapping("/modificar/{idProducto}") //Mapeamos hacía "modificar" junto con el id del producto que se quiere modificar
     public String modificar(Producto producto, Model model) { //<-Párametros 
         producto = productoService.getProducto(producto); //En el objeto "producto" recupera todos los atributos del producto seleccionada
         model.addAttribute("producto", producto); //Se inyectan los atributos a este model para que se usen en la dirección del return
         return "/producto/modifica"; //Retorna a esa dirección
     }
+
+    @GetMapping("/ver/{idProducto}")
+    public String verProducto(@PathVariable("idProducto") Long idProducto, Model model) {
+        Producto producto = new Producto();
+        producto.setIdProducto(idProducto);
+        producto = productoService.getProducto(producto);
+        model.addAttribute("producto", producto);
+        return "catalogo/verproducto"; // Ajusta la ruta para que apunte a la carpeta catalogo
+    }
+
 }

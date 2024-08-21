@@ -1,19 +1,30 @@
 <!DOCTYPE html>
-<!-- Esta es la primera página web dinámica   -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 
     <head th:replace="~{layout/plantilla :: head}">
-        <title>Smell Elegance</title>
+        <title>Detalle del Producto</title>
+
     </head>
 
     <body>
-        <header th:replace="~{layout/plantilla :: header}"/>
+        <header th:replace="~{layout/plantilla :: header}"></header>
 
-        <section th:replace="~{catalogo/fragmentosCatalogo :: verProducto}"/>
-        
+        <div class="container mt-5">
+            <div class="product-card">
+                <img th:src="${producto.rutaImagen}" alt="Imagen del Producto">
+                    <h1 th:text="${producto.nombreProducto}">Nombre del Producto</h1>
+                    <p class="price">₡<span th:text="${producto.precio}">Precio del Producto</span></p>
+                    <p th:text="${producto.descripcion}">Descripción del Producto</p>
+                    <p>Marca: <span th:text="${producto.marca}">Marca del Producto</span></p>
+                    <p>Tamaño: <span th:text="${producto.tamano}">Tamaño del Producto</span></p>
+                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                    <a href="/catalogo/listcatalogo" class="btn btn-secondary">Volver al catálogo</a>
+            </div>
+        </div>
 
+        <footer th:replace="~{layout/plantilla :: footer}"></footer>
     </body>
 
 </html>

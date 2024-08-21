@@ -55,9 +55,10 @@ public class ProjectConfig implements WebMvcConfigurer {
                         "/catalogo/**", // Asegura que todas las rutas dentro de /catalogo/ sean públicas
                         "/buscar",
                         "/contacto/listcontacto",
+                        "/producto/ver/**", // Asegura que la página de detalles de productos sea pública
                         "/carrito/**", "/pruebas/**", "/reportes/**",
                         "/registro/**", "/js/**", "/webjars/**")
-                .permitAll() // Esto asegura que no necesitas ningún rol para acceder al catálogo
+                .permitAll() // Esto asegura que no necesitas ningún rol para acceder al catálogo y detalles del producto
                 .requestMatchers(
                         "/producto/nuevo", "/producto/guardar",
                         "/producto/modificar/**", "/producto/eliminar/**",
