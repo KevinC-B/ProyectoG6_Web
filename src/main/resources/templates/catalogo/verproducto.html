@@ -5,7 +5,6 @@
 
     <head th:replace="~{layout/plantilla :: head}">
         <title>Detalle del Producto</title>
-
     </head>
 
     <body>
@@ -19,28 +18,48 @@
                     <p th:text="${producto.descripcion}">Descripción del Producto</p>
                     <p>Marca: <span th:text="${producto.marca}">Marca del Producto</span></p>
                     <p>Tamaño: <span th:text="${producto.tamano}">Tamaño del Producto</span></p>
+
                     <div class="d-flex justify-content-around">
-                        <form >
-                            <input type="hidden" 
-                                   name="idProducto" 
-                                   th:value="${producto.idProducto}"/>
-                            <input type="hidden" 
-                                   name="existencias" 
-                                   th:value="${producto.existencias}"/>
-                            <button class="btn btn-dark" 
-                                    type="button"
-                                    onclick="addCart(this.form)">
+                        <form th:action="@{/carrito/agregar/{idProducto}(idProducto=${producto.idProducto})}" method="post" class="d-flex align-items-center">
+                            <input type="number" name="cantidad" class="form-control me-2" value="1" min="1" max="[[${producto.existencias}]]" required />
+                            <button class="btn btn-dark" type="submit">
                                 Añadir al carrito
                             </button>
-
                         </form>
-                    <a href="/catalogo/listcatalogo" class="btn btn-secondary">Volver al catálogo</a>
+                        <a href="/catalogo/listcatalogo" class="btn btn-secondary">Volver al catálogo</a>
                     </div>
-                    
+
+                    <!-- Mensaje de confirmación -->
+                    <div class="alert alert-success mt-3" id="confirmacion-carrito-detalle" style="display: none;">
+                        Producto añadido al carrito.
+                    </div>
             </div>
         </div>
 
         <footer th:replace="~{layout/plantilla :: footer}"></footer>
+
+        <!-- JavaScript para mostrar el mensaje de confirmación -->
+        <script>
+            function mostrarConfirmacion(id) {
+                var confirmacion = document.getElementById(id);
+                confirmacion.style.display = "block";
+                setTimeout(function () {
+                    confirmacion.style.display = "none";
+                }, 3000); // El mensaje desaparece después de 3 segundos
+            }
+
+            // Asumiendo que estás usando el evento submit para interceptar y mostrar el mensaje
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Evita el envío inmediato del formulario para mostrar el mensaje primero
+                    var idProducto = this.querySelector('[name="idProducto"]').value;
+                    mostrarConfirmacion('confirmacion-carrito-detalle');
+                    setTimeout(() => {
+                        this.submit(); // Envía el formulario después de mostrar el mensaje
+                    }, 300); // Da un pequeño margen antes de enviar el formulario
+                });
+            });
+        </script>
     </body>
 
 </html>

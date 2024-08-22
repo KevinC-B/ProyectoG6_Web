@@ -2,6 +2,8 @@ package proyecto.perfumeria.services.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import proyecto.perfumeria.dao.RolDao;
@@ -12,7 +14,7 @@ import proyecto.perfumeria.services.UsuarioService;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-    
+
     @Autowired
     private UsuarioDao usuarioDao;
     @Autowired
@@ -57,7 +59,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public void save(Usuario usuario, boolean crearRolUser) {
-        usuario=usuarioDao.save(usuario);
+        usuario = usuarioDao.save(usuario);
         if (crearRolUser) {  //Si se está creando el usuario, se crea el rol por defecto "USER"
             Rol rol = new Rol();
             rol.setNombre("ROLE_USER");
@@ -70,5 +72,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public void delete(Usuario usuario) {
         usuarioDao.delete(usuario);
+    }
+
+    @Override
+    public Usuario getUsuarioAutenticado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return getUsuarioPorUsername(username);
     }
 }

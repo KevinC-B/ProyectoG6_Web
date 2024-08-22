@@ -8,7 +8,7 @@
         <title>TechShop</title>
     </head>
     <body>
-        
+
         <div th:fragment="verCarrito" th:unless="${#lists.isEmpty(listaItems)}">            
             <form action="/carrito/listcarrito">
                 <button
@@ -19,7 +19,7 @@
                 </button>
             </form>
         </div>     
-        
+
 
         <section th:fragment="listcarrito" id="items">
             <h1>Carrito</h1>
@@ -85,11 +85,12 @@
                                    class="btn btn-dark">
                                     <i class='fas fa-reply'></i> Seguir Comprando
                                 </a>
-                                
-                                <a th:href="@{/facturar/carrito}"
+
+                                <a th:href="@{/carrito/facturacion}"
                                    class="btn btn-secondary" style="margin-top:15px">
-                                    <i class='fas fa-fordward'></i> Facturar
+                                    <i class='fas fa-forward'></i> Facturar
                                 </a>
+                                
                             </div>
                         </div>
                     </div>

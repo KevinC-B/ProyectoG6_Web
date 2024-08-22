@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
+
     <head th:replace="~{layout/plantilla :: head}">
         <title>Catálogo de Productos</title>
     </head>
@@ -41,7 +41,6 @@
 
                     <!-- Botón para restablecer filtros -->
                     <a href="/catalogo/listcatalogo" class="btn btn-secondary ml-2">Restablecer</a>
-
                 </div>
             </form>
         </section>
@@ -63,7 +62,19 @@
                                     <p class="card-text">Precio: ₡<span th:text="${producto.precio}">Precio del Producto</span></p>
 
                                     <!-- Botón Ver detalles -->
-                                    <a th:href="@{/producto/ver/{idProducto}(idProducto=${producto.idProducto})}" class="btn btn-primary">Ver detalles</a>
+                                    <a th:href="@{/catalogo/verproducto/{idProducto}(idProducto=${producto.idProducto})}" class="btn btn-primary mb-2">Ver detalles</a>
+
+                                    <!-- Formulario para añadir al carrito -->
+                                    <form class="d-flex align-items-center">
+                                        <input type="hidden" name="idProducto" th:value="${producto.idProducto}" />
+                                        <input type="number" name="cantidad" class="form-control me-2" value="1" min="1" max="[[${producto.existencias}]]" required />
+                                        <button type="button" class="btn btn-dark" onclick="addCart(this.form)">Añadir al carrito</button>
+                                    </form>
+
+                                    <!-- Mensaje de confirmación -->
+                                    <div class="alert alert-success mt-3" id="confirmacion-carrito-${producto.idProducto}" style="display: none;">
+                                        Producto añadido al carrito.
+                                    </div>
                                 </div>
                         </div>
                     </div>
@@ -72,6 +83,28 @@
         </section>
 
         <!-- Pie de página -->
+        <footer th:replace="~{layout/plantilla :: footer}"></footer>
+
+        <!-- JavaScript para mostrar el mensaje de confirmación -->
+        <script>
+            function mostrarConfirmacion(id) {
+                var confirmacion = document.getElementById(id);
+                confirmacion.style.display = "block";
+                setTimeout(function () {
+                    confirmacion.style.display = "none";
+                }, 3000); // El mensaje desaparece después de 3 segundos
+            }
+
+            function addCart(formulario) {
+                var idProducto = formulario.elements['idProducto'].value;
+                var cantidad = formulario.elements['cantidad'].value;
+
+                var url = "/carrito/agregar/" + idProducto + "?cantidad=" + cantidad;
+                $('#resultsBlock').load(url, function () {
+                    mostrarConfirmacion('confirmacion-carrito-' + idProducto);
+                });
+            }
+        </script>
     </body>
 
 </html>
