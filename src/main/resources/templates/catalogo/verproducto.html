@@ -19,8 +19,24 @@
                     <p th:text="${producto.descripcion}">Descripción del Producto</p>
                     <p>Marca: <span th:text="${producto.marca}">Marca del Producto</span></p>
                     <p>Tamaño: <span th:text="${producto.tamano}">Tamaño del Producto</span></p>
-                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                    <div class="d-flex justify-content-around">
+                        <form >
+                            <input type="hidden" 
+                                   name="idProducto" 
+                                   th:value="${producto.idProducto}"/>
+                            <input type="hidden" 
+                                   name="existencias" 
+                                   th:value="${producto.existencias}"/>
+                            <button class="btn btn-dark" 
+                                    type="button"
+                                    onclick="addCart(this.form)">
+                                Añadir al carrito
+                            </button>
+
+                        </form>
                     <a href="/catalogo/listcatalogo" class="btn btn-secondary">Volver al catálogo</a>
+                    </div>
+                    
             </div>
         </div>
 

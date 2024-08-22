@@ -54,7 +54,7 @@ public class ProjectConfig implements WebMvcConfigurer {
                 .requestMatchers("/login/**", "/", "/index", "/errores/**",
                         "/catalogo/**", // Asegura que todas las rutas dentro de /catalogo/ sean públicas
                         "/buscar",
-                        "/contacto/listcontacto",
+                        "/contacto/listcontacto","/carrito/listcarrito",
                         "/producto/ver/**", // Asegura que la página de detalles de productos sea pública
                         "/carrito/**", "/pruebas/**", "/reportes/**",
                         "/registro/**", "/js/**", "/webjars/**")
