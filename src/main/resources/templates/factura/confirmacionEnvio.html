@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+    
+    <head th:replace="~{layout/plantilla :: head}">
+        <meta charset="UTF-8">
+        <title>Confirmación de Envío</title>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">¡Confirmación de Envío!</h4>
+                <p>Su factura ha sido enviada con éxito a su correo electrónico</p>
+                <hr>
+                <p class="mb-0">Si tiene alguna pregunta o necesita asistencia adicional, no dude en contactarnos. Gracias por su compra!!</p>
+            </div>
+
+            <div class="mt-4">
+                <a th:href="@{/index}" class="btn btn-success">
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

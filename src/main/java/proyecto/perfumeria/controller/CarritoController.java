@@ -9,9 +9,10 @@ import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import proyecto.perfumeria.domain.Item;
 import proyecto.perfumeria.domain.Producto;
 import proyecto.perfumeria.services.ItemService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import proyecto.perfumeria.services.CorreoService;
 
 @Controller
 public class CarritoController {
@@ -36,6 +38,9 @@ public class CarritoController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private CorreoService correoService;
 
     //Para ver el carrito
     @GetMapping("/carrito/listcarrito")
@@ -207,5 +212,68 @@ public class CarritoController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("/carrito/enviarFactura")
+    public String enviarFactura(Model model) {
+        var items = itemService.gets();
+        var total = itemService.getTotal();
+        var usuario = usuarioService.getUsuarioAutenticado();
+
+        // Generación del PDF en memoria
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            PdfWriter writer = new PdfWriter(baos);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            pdf.setDefaultPageSize(PageSize.A4);
+            document.setMargins(36, 36, 36, 36);
+
+            // Añadir contenido al PDF (título, información del cliente, tabla de productos, etc.)
+            document.add(new Paragraph("Factura de Compra").setFontSize(18).setBold().setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("\n"));
+            document.add(new Paragraph("Información del Cliente"));
+            document.add(new Paragraph("Nombre: " + usuario.getNombre()));
+            document.add(new Paragraph("Correo: " + usuario.getCorreo()));
+            document.add(new Paragraph("\n"));
+
+            // Crear la tabla y agregar los datos
+            Table table = new Table(new float[]{3, 1, 2, 2});
+            table.setWidth(UnitValue.createPercentValue(100));
+            table.addHeaderCell(new Cell().add(new Paragraph("Producto")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Cantidad")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Precio Unitario")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Total")));
+
+            for (Item item : items) {
+                table.addCell(new Cell().add(new Paragraph(item.getNombreProducto())));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(item.getCantidad()))));
+                table.addCell(new Cell().add(new Paragraph("₡" + item.getPrecio())));
+                table.addCell(new Cell().add(new Paragraph("₡" + (item.getCantidad() * item.getPrecio()))));
+            }
+
+            document.add(table);
+            document.add(new Paragraph("\n"));
+            document.add(new Paragraph("Total a Pagar: ₡" + total).setFontSize(14).setBold().setTextAlignment(TextAlignment.RIGHT));
+
+            document.close();
+
+            // Enviar el PDF por correo
+            correoService.enviarCorreoConAdjunto(
+                    usuario.getCorreo(),
+                    "Factura de su Compra",
+                    "<h1>Gracias por su compra</h1><p>Adjuntamos su factura en formato PDF.</p>",
+                    baos.toByteArray(),
+                    "factura.pdf"
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error al generar o enviar la factura.");
+            return "factura/errorEnvio";
+        }
+
+        model.addAttribute("mensaje", "Factura enviada con éxito.");
+        return "factura/confirmacionEnvio";
     }
 }
